@@ -25,7 +25,7 @@ namespace ProjetoIntegradorIIIA
         public void AddFirst(T item)
         {
             CustomLinkedListNode<T> node = new CustomLinkedListNode<T>(this, item);
-            
+
             if (head == null)
             {
                 InternalInsertNodeToEmptyList(node);
