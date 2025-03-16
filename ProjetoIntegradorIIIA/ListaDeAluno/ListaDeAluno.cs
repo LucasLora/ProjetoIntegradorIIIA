@@ -3,7 +3,7 @@ using ProjetoIntegradorIIIA.Models;
 
 namespace ProjetoIntegradorIIIA.ListaDeAluno
 {
-    public class ListaDeAluno
+    public class ListaDeAluno : IListaDeAluno
     {
         private CustomLinkedList<Aluno> lista;
 
