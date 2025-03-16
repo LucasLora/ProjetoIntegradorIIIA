@@ -7,20 +7,11 @@ namespace ProjetoIntegradorIIIA
         internal CustomLinkedListNode<T> head;
         internal int count;
 
-        public int Count
-        {
-            get { return count; }
-        }
+        public int Count => count;
 
-        public CustomLinkedListNode<T> First
-        {
-            get { return head; }
-        }
+        public CustomLinkedListNode<T> First => head;
 
-        public CustomLinkedListNode<T> Last
-        {
-            get { return head == null ? null : head.prev; }
-        }
+        public CustomLinkedListNode<T> Last => head?.prev;
 
         public void AddFirst(T item)
         {
@@ -80,7 +71,7 @@ namespace ProjetoIntegradorIIIA
             InternalRemoveNode(head.prev);
         }
 
-        internal void InternalRemoveNode(CustomLinkedListNode<T> node)
+        private void InternalRemoveNode(CustomLinkedListNode<T> node)
         {
             if (node.next == node)
             {
@@ -98,6 +89,30 @@ namespace ProjetoIntegradorIIIA
 
             node.Invalidate();
             count--;
+        }
+
+        public void Sort(Comparison<T> comparison)
+        {
+            if (Count <= 1) return;
+
+            bool swapped = true;
+
+            while (swapped)
+            {
+                swapped = false;
+
+                for (CustomLinkedListNode<T> node = First; node != null && node.Next != null; node = node.Next)
+                {
+                    if (comparison(node.Value, node.Next.Value) > 0)
+                    {
+                        T temp = node.Value;
+                        node.Value = node.Next.Value;
+                        node.Next.Value = temp;
+
+                        swapped = true;
+                    }
+                }
+            }
         }
     }
 }

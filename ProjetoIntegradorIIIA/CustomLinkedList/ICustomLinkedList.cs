@@ -7,5 +7,6 @@
         void AddLast(T item);
         void RemoveFirst();
         void RemoveLast();
+        void Sort(Comparison<T> comparison);
     }
 }

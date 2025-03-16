@@ -13,25 +13,16 @@
             this.value = value;
         }
 
-        public CustomLinkedList<T> List
-        {
-            get { return list; }
-        }
+        public CustomLinkedList<T> List => list;
 
-        public CustomLinkedListNode<T> Next
-        {
-            get { return next == null || next == list.head ? null : next; }
-        }
+        public CustomLinkedListNode<T> Next => next == null || next == list.head ? null : next;
 
-        public CustomLinkedListNode<T> Previous
-        {
-            get { return prev == null || this == list.head ? null : prev; }
-        }
+        public CustomLinkedListNode<T> Previous => prev == null || this == list.head ? null : prev;
 
         public T Value
         {
-            get { return value; }
-            set { this.value = value; }
+            get => value;
+            set => this.value = value;
         }
 
         internal void Invalidate()
