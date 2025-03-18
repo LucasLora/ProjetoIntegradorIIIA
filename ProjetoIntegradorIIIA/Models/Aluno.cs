@@ -2,19 +2,35 @@
 {
     public class Aluno
     {
-        public int Codigo { get; set; }
-        public string Nome { get; set; }
-        public string Cpf { get; set; }
-        public string Endereco { get; set; }
-        public DateTime DataNascimento { get; set; }
+        private static int ultimoCodigo = 0;
+        public int Codigo { get; private set; }
+        public string Nome { get; private set; }
+        public string Cpf { get; private set; }
+        public string Endereco { get; private set; }
+        public DateTime DataNascimento { get; private set; }
 
-        public Aluno(int codigo, string nome, string cpf, string endereco, DateTime dataNascimento)
+        public Aluno(string nome, string cpf, string endereco, DateTime dataNascimento)
         {
-            Codigo = codigo;
+            Codigo = ++ultimoCodigo;
             Nome = nome;
             Cpf = cpf;
             Endereco = endereco;
             DataNascimento = dataNascimento;
+        }
+
+        public override string ToString()
+        {
+            int idade = CalcularIdade();
+            return $"{Codigo} - {Nome} - {idade} anos";
+        }
+
+        private int CalcularIdade()
+        {
+            DateTime hoje = DateTime.Today;
+            int idade = hoje.Year - DataNascimento.Year;
+            if (DataNascimento > hoje.AddYears(-idade))
+                idade--;
+            return idade;
         }
     }
 }
