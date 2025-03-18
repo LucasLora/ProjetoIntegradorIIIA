@@ -5,20 +5,26 @@ namespace ProjetoIntegradorIIIA.Models
 {
     public class Turma
     {
-        public int Codigo { get; set; }
-        public EtapaEnsinoEnum EtapaEnsino { get; set; }
-        public byte Ano { get; set; }
-        public int LimiteVagas { get; set; }
+        private static int ultimoCodigo = 0;
+        public int Codigo { get; private set; }
+        public EtapaEnsinoEnum EtapaEnsino { get; private set; }
+        public byte Ano { get; private set; }
+        public int LimiteVagas { get; private set; }
         public int QuantidadeMatriculados => Alunos.Tamanho();
-        public IListaDeAluno Alunos { get; set; }
+        public IListaDeAluno Alunos { get; private set; }
 
-        public Turma(int codigo, EtapaEnsinoEnum etapaEnsino, byte ano, int limiteVagas, IListaDeAluno listaDeAluno)
+        public Turma(EtapaEnsinoEnum etapaEnsino, byte ano, int limiteVagas, IListaDeAluno alunos)
         {
-            Codigo = codigo;
+            Codigo = ++ultimoCodigo;
             EtapaEnsino = etapaEnsino;
             Ano = ano;
             LimiteVagas = limiteVagas;
-            Alunos = listaDeAluno;
+            Alunos = alunos;
+        }
+
+        public override string ToString()
+        {
+            return $"Código: {Codigo}, Etapa: {EtapaEnsino.GetDescription()}, Ano: {Ano}, Vagas: {QuantidadeMatriculados}/{LimiteVagas}";
         }
     }
 }
