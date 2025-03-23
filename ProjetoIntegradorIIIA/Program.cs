@@ -213,27 +213,35 @@ internal class Program
 
     private static void MatricularAlunosEmUmaTurma()
     {
-        Console.WriteLine("=== Matrícula de aluno em turma ===");
+        Console.WriteLine("\n=== Matrícula de aluno em turma ===");
+
+        Console.WriteLine("\nTurmas cadastradas:");
+        ListarTodasAsTurmasDaEscola();
 
         int codigoTurma;
         while (true)
         {
             Console.Write("Digite o código da turma: ");
-            string stringCodigoTurma = Console.ReadLine();
-            if (int.TryParse(stringCodigoTurma, out codigoTurma))
+            if (int.TryParse(Console.ReadLine(), out codigoTurma))
                 break;
+
             Console.WriteLine("Código da turma inválido! Por favor, insira um número inteiro.");
         }
+
+        Console.WriteLine("\nAlunos cadastrados:");
+        ListarTodosOsAlunosDaEscola();
 
         int codigoAluno;
         while (true)
         {
             Console.Write("Digite o código do aluno: ");
-            string stringCodigoAluno = Console.ReadLine();
-            if (int.TryParse(stringCodigoAluno, out codigoAluno))
+            if (int.TryParse(Console.ReadLine(), out codigoAluno))
                 break;
+
             Console.WriteLine("Código do aluno inválido! Por favor, insira um número inteiro.");
         }
+
+        Console.WriteLine();
 
         try
         {
@@ -244,6 +252,8 @@ internal class Program
         {
             Console.WriteLine("Erro ao matricular o aluno: " + ex.Message);
         }
+
+        Console.WriteLine();
     }
 
     private static void ListarTodosOsAlunosDaEscola()
