@@ -156,24 +156,19 @@ internal class Program
 
     private static void CadastrarTurma()
     {
-        Console.WriteLine("=== Cadastro de turma ===");
+        Console.WriteLine("\n=== Cadastro de turma ===");
 
-        // Exibe as opções de Etapa de Ensino com suas descrições
         Console.WriteLine("Selecione a Etapa de Ensino:");
         foreach (EtapaEnsinoEnum etapa in Enum.GetValues(typeof(EtapaEnsinoEnum)))
         {
-            string descricao = EnumHelper.GetDescription(etapa);
-            int valor = (int)etapa;
-            Console.WriteLine($"{(int)etapa} - {descricao}");
+            Console.WriteLine($"{(int)etapa} - {EnumHelper.GetDescription(etapa)}");
         }
 
-        // Validação da etapa de ensino
         EtapaEnsinoEnum etapaEnsino;
         while (true)
         {
             Console.Write("Digite o número correspondente à Etapa de Ensino: ");
-            string stringEtapa = Console.ReadLine();
-            if (int.TryParse(stringEtapa, out int opcao) && Enum.IsDefined(typeof(EtapaEnsinoEnum), opcao))
+            if (int.TryParse(Console.ReadLine(), out int opcao) && Enum.IsDefined(typeof(EtapaEnsinoEnum), opcao))
             {
                 etapaEnsino = (EtapaEnsinoEnum)opcao;
                 break;
@@ -181,45 +176,39 @@ internal class Program
             Console.WriteLine("Opção inválida! Por favor, tente novamente.");
         }
 
-        // Validação do ano da turma
         byte ano;
         while (true)
         {
             Console.Write("Digite o ano da turma (número inteiro positivo): ");
-            string stringAno = Console.ReadLine();
-            if (byte.TryParse(stringAno, out ano) && ano > 0)
-            {
+            if (byte.TryParse(Console.ReadLine(), out ano) && ano > 0)
                 break;
-            }
+
             Console.WriteLine("Ano inválido! Deve ser um número inteiro positivo.");
         }
 
-        // Validação do limite de vagas
         int limiteVagas;
         while (true)
         {
             Console.Write("Digite o limite de vagas (número inteiro positivo): ");
-            string stringLimite = Console.ReadLine();
-            if (int.TryParse(stringLimite, out limiteVagas) && limiteVagas > 0)
-            {
+            if (int.TryParse(Console.ReadLine(), out limiteVagas) && limiteVagas > 0)
                 break;
-            }
+
             Console.WriteLine("Limite de vagas inválido! Deve ser um número inteiro positivo.");
         }
 
-        // Instancia a lista de alunos (supondo que exista uma implementação, como 'ListaDeAluno')
-        IListaDeAluno alunos = new ListaDeAluno();
+        Console.WriteLine();
+
         try
         {
-            // Cadastra a turma na escola
-            escola.CadastrarTurma(new Turma(etapaEnsino, ano, limiteVagas, alunos));
-
+            escola.CadastrarTurma(new Turma(etapaEnsino, ano, limiteVagas, new ListaDeAluno()));
             Console.WriteLine("Turma cadastrada com sucesso!");
         }
         catch (Exception ex)
         {
             Console.WriteLine("Erro ao cadastrar a turma: " + ex.Message);
         }
+
+        Console.WriteLine();
     }
 
     private static void MatricularAlunosEmUmaTurma()
