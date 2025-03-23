@@ -266,15 +266,15 @@ internal class Program
         }
         else
         {
-            Console.WriteLine(string.Join(Environment.NewLine, ObterAlunosFormatados()));
+            Console.WriteLine(string.Join(Environment.NewLine, ObterAlunosFormatados(escola.Alunos.PrimeiroAluno())));
         }
 
         Console.WriteLine();
     }
 
-    private static IEnumerable<string> ObterAlunosFormatados()
+    private static IEnumerable<string> ObterAlunosFormatados(CustomLinkedListNode<Aluno> initialNode)
     {
-        for (CustomLinkedListNode<Aluno> node = escola.Alunos.PrimeiroAluno(); node != null; node = node.Next)
+        for (CustomLinkedListNode<Aluno> node = initialNode; node != null; node = node.Next)
         {
             yield return node.value.ToString();
         }
@@ -298,7 +298,40 @@ internal class Program
 
     private static void ListarAlunosDeUmaTurmaEspecifica()
     {
-        Console.WriteLine("Funcionalidade de listagem de alunos de uma turma específica.");
+        Console.WriteLine("\n=== Listagem de Alunos de uma Turma Específica ===");
+
+        Console.WriteLine("\nTurmas cadastradas:");
+        ListarTodasAsTurmasDaEscola();
+
+        int codigoTurma;
+        while (true)
+        {
+            Console.Write("Digite o código da turma: ");
+            if (int.TryParse(Console.ReadLine(), out codigoTurma))
+                break;
+
+            Console.WriteLine("Código da turma inválido! Por favor, insira um número inteiro.");
+        }
+
+        Turma? turma = escola.Turmas.FirstOrDefault(x => x.Codigo == codigoTurma);
+        if (turma == null)
+        {
+            Console.WriteLine("\nTurma com o código informado não foi encontrada.");
+        }
+        else
+        {
+            if (turma.Alunos.Tamanho() == 0)
+            {
+                Console.WriteLine("\nNenhum aluno matriculado nesta turma.");
+            }
+            else
+            {
+                Console.WriteLine("\nAlunos matriculados na turma:");
+                Console.WriteLine(string.Join(Environment.NewLine, ObterAlunosFormatados(turma.Alunos.PrimeiroAluno())));
+            }
+        }
+
+        Console.WriteLine();
     }
 
     private static void ContarAlunosForaDaFaixaEtariaPorEtapaDeEnsino()
