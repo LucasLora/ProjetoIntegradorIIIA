@@ -24,7 +24,7 @@
             return $"{Codigo} - {Nome} - {idade} anos";
         }
 
-        private int CalcularIdade()
+        public int CalcularIdade()
         {
             DateTime hoje = DateTime.Today;
             int idade = hoje.Year - DataNascimento.Year;

@@ -266,15 +266,15 @@ internal class Program
         }
         else
         {
-            Console.WriteLine(string.Join(Environment.NewLine, ObterAlunosFormatados()));
+            Console.WriteLine(string.Join(Environment.NewLine, ObterAlunosFormatados(escola.Alunos.PrimeiroAluno())));
         }
 
         Console.WriteLine();
     }
 
-    private static IEnumerable<string> ObterAlunosFormatados()
+    private static IEnumerable<string> ObterAlunosFormatados(CustomLinkedListNode<Aluno> initialNode)
     {
-        for (CustomLinkedListNode<Aluno> node = escola.Alunos.PrimeiroAluno(); node != null; node = node.Next)
+        for (CustomLinkedListNode<Aluno> node = initialNode; node != null; node = node.Next)
         {
             yield return node.value.ToString();
         }
@@ -298,11 +298,97 @@ internal class Program
 
     private static void ListarAlunosDeUmaTurmaEspecifica()
     {
-        Console.WriteLine("Funcionalidade de listagem de alunos de uma turma específica.");
+        Console.WriteLine("\n=== Listagem de Alunos de uma Turma Específica ===");
+
+        Console.WriteLine("\nTurmas cadastradas:");
+        ListarTodasAsTurmasDaEscola();
+
+        int codigoTurma;
+        while (true)
+        {
+            Console.Write("Digite o código da turma: ");
+            if (int.TryParse(Console.ReadLine(), out codigoTurma))
+                break;
+
+            Console.WriteLine("Código da turma inválido! Por favor, insira um número inteiro.");
+        }
+
+        Turma? turma = escola.Turmas.FirstOrDefault(x => x.Codigo == codigoTurma);
+        if (turma == null)
+        {
+            Console.WriteLine("\nTurma com o código informado não foi encontrada.");
+        }
+        else
+        {
+            if (turma.Alunos.Tamanho() == 0)
+            {
+                Console.WriteLine("\nNenhum aluno matriculado nesta turma.");
+            }
+            else
+            {
+                Console.WriteLine("\nAlunos matriculados na turma:");
+                Console.WriteLine(string.Join(Environment.NewLine, ObterAlunosFormatados(turma.Alunos.PrimeiroAluno())));
+            }
+        }
+
+        Console.WriteLine();
     }
 
     private static void ContarAlunosForaDaFaixaEtariaPorEtapaDeEnsino()
     {
-        Console.WriteLine("Funcionalidade de contagem de alunos fora da faixa etária por etapa de ensino.");
+        Console.WriteLine("\n=== Contagem de Alunos Fora da Faixa Etária ===");
+
+        Console.WriteLine("Selecione a Etapa de Ensino para verificar a faixa etária:");
+        foreach (EtapaEnsinoEnum etapa in Enum.GetValues(typeof(EtapaEnsinoEnum)))
+        {
+            Console.WriteLine($"{(int)etapa} - {EnumHelper.GetDescription(etapa)}");
+        }
+
+        EtapaEnsinoEnum etapaSelecionada;
+        while (true)
+        {
+            Console.Write("Digite o número correspondente à Etapa de Ensino: ");
+            if (int.TryParse(Console.ReadLine(), out int opcao) && Enum.IsDefined(typeof(EtapaEnsinoEnum), opcao))
+            {
+                etapaSelecionada = (EtapaEnsinoEnum)opcao;
+                break;
+            }
+            Console.WriteLine("Opção inválida. Tente novamente.");
+        }
+
+        var (idadeMinima, idadeMaxima) = ObtemIdadesDaEtapaDeEnsino(etapaSelecionada);
+
+        int totalForaFaixa = 0;
+        foreach (var turma in escola.Turmas.Where(x => x.EtapaEnsino == etapaSelecionada))
+        {
+            for (CustomLinkedListNode<Aluno> node = turma.Alunos.PrimeiroAluno(); node != null; node = node.Next)
+            {
+                int idade = node.Value.CalcularIdade();
+                if (idade < idadeMinima || idade > idadeMaxima)
+                {
+                    totalForaFaixa++;
+                }
+            }
+        }
+
+        Console.WriteLine($"\nTotal de alunos fora da faixa etária para {EnumHelper.GetDescription(etapaSelecionada)}: {totalForaFaixa}");
+        Console.WriteLine();
+    }
+
+    private static (int idadeMinima, int idadeMaxima) ObtemIdadesDaEtapaDeEnsino(EtapaEnsinoEnum etapaSelecionada)
+    {
+        switch (etapaSelecionada)
+        {
+            case EtapaEnsinoEnum.Infantil:
+                return (0, 5);
+            case EtapaEnsinoEnum.FundamentalAnosIniciais:
+                return (6, 11);
+            case EtapaEnsinoEnum.FundamentalAnosFinais:
+                return (11, 15);
+            case EtapaEnsinoEnum.Medio:
+                return (15, 18);
+            default:
+                return (0, int.MaxValue);
+        }
     }
 }
