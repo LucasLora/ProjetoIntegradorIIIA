@@ -13,5 +13,6 @@ namespace ProjetoIntegradorIIIA.ListaDeAluno
         int Tamanho();
         CustomLinkedListNode<Aluno> PrimeiroAluno();
         Aluno? GetByCodigo(int codigo);
+        Aluno? Get(int pos);
     }
 }
