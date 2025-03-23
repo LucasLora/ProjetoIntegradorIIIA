@@ -33,5 +33,21 @@ namespace ProjetoIntegradorIIIA.ListaDeAluno
 
             return null;
         }
+
+        public Aluno? Get(int pos)
+        {
+            if (pos < 0 || pos >= lista.Count)
+                throw new IndexOutOfRangeException();
+
+            int i = 0;
+            for (CustomLinkedListNode<Aluno> node = lista.First; node != null; node = node.Next)
+            {
+                if (i == pos)
+                    return node.Value;
+                i++;
+            }
+
+            return null;
+        }
     }
 }
