@@ -2,7 +2,6 @@
 using ProjetoIntegradorIIIA.Enums;
 using ProjetoIntegradorIIIA.ListaDeAluno;
 using ProjetoIntegradorIIIA.Models;
-using System.ComponentModel;
 
 internal class Program
 {
@@ -99,7 +98,7 @@ internal class Program
                 break;
 
             Console.WriteLine("O nome não pode estar vazio.");
-        } 
+        }
 
         // Validação de cpf
         string cpf;
@@ -301,20 +300,18 @@ internal class Program
 
     private static void ListarTodasAsTurmasDaEscola()
     {
-        Console.WriteLine("=== Listagem de Turmas da Escola ===");
+        Console.WriteLine("\n=== Listagem de Turmas da Escola ===");
 
-        var turmas = escola.ObterTodasAsTurmas(); // Chama o método da classe Escola
-
-        if (!turmas.Any())
+        if (escola.Turmas.Count == 0)
         {
             Console.WriteLine("Nenhuma turma cadastrada na escola.");
-            return;
+        }
+        else
+        {
+            Console.WriteLine(string.Join(Environment.NewLine, escola.Turmas.Select(x => x.ToString())));
         }
 
-        foreach (var turma in turmas)
-        {
-            Console.WriteLine($"Código: {turma.Codigo} | Etapa de Ensino: {turma.EtapaEnsino} | Ano: {turma.Ano} | Vagas: {turma.LimiteVagas} | Matriculados: {turma.QuantidadeMatriculados}");
-        }
+        Console.WriteLine();
     }
 
     private static void ListarAlunosDeUmaTurmaEspecifica()

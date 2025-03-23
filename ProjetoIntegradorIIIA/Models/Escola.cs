@@ -57,14 +57,7 @@
 
         public ListaDeAluno.ListaDeAluno ObterTodosOsAlunos()
         {
-            return Alunos; 
-        }
-
-        public List<Turma> ObterTodasAsTurmas()
-        {
-            return Turmas.ToList(); 
+            return Alunos;
         }
     }
-
-
 }
