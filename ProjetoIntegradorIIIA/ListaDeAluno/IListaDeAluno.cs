@@ -1,4 +1,5 @@
-﻿using ProjetoIntegradorIIIA.Models;
+﻿using ProjetoIntegradorIIIA.CustomLinkedList;
+using ProjetoIntegradorIIIA.Models;
 
 namespace ProjetoIntegradorIIIA.ListaDeAluno
 {
@@ -10,6 +11,7 @@ namespace ProjetoIntegradorIIIA.ListaDeAluno
         void RemoverDoInicio();
         void RemoverDoFim();
         int Tamanho();
+        CustomLinkedListNode<Aluno> PrimeiroAluno();
         Aluno? GetByCodigo(int codigo);
     }
 }

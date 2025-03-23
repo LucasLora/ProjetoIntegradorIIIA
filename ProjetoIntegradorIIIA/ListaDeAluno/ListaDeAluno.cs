@@ -21,6 +21,8 @@ namespace ProjetoIntegradorIIIA.ListaDeAluno
 
         public int Tamanho() => lista.Count;
 
+        public CustomLinkedListNode<Aluno> PrimeiroAluno() => lista.First;
+
         public Aluno? GetByCodigo(int codigo)
         {
             for (CustomLinkedListNode<Aluno> node = lista.First; node != null; node = node.Next)
