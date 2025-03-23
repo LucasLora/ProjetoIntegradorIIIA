@@ -336,6 +336,59 @@ internal class Program
 
     private static void ContarAlunosForaDaFaixaEtariaPorEtapaDeEnsino()
     {
-        Console.WriteLine("Funcionalidade de contagem de alunos fora da faixa etária por etapa de ensino.");
+        Console.WriteLine("\n=== Contagem de Alunos Fora da Faixa Etária ===");
+
+        Console.WriteLine("Selecione a Etapa de Ensino para verificar a faixa etária:");
+        foreach (EtapaEnsinoEnum etapa in Enum.GetValues(typeof(EtapaEnsinoEnum)))
+        {
+            Console.WriteLine($"{(int)etapa} - {EnumHelper.GetDescription(etapa)}");
+        }
+
+        EtapaEnsinoEnum etapaSelecionada;
+        while (true)
+        {
+            Console.Write("Digite o número correspondente à Etapa de Ensino: ");
+            if (int.TryParse(Console.ReadLine(), out int opcao) && Enum.IsDefined(typeof(EtapaEnsinoEnum), opcao))
+            {
+                etapaSelecionada = (EtapaEnsinoEnum)opcao;
+                break;
+            }
+            Console.WriteLine("Opção inválida. Tente novamente.");
+        }
+
+        var (idadeMinima, idadeMaxima) = ObtemIdadesDaEtapaDeEnsino(etapaSelecionada);
+
+        int totalForaFaixa = 0;
+        foreach (var turma in escola.Turmas.Where(x => x.EtapaEnsino == etapaSelecionada))
+        {
+            for (CustomLinkedListNode<Aluno> node = turma.Alunos.PrimeiroAluno(); node != null; node = node.Next)
+            {
+                int idade = node.Value.CalcularIdade();
+                if (idade < idadeMinima || idade > idadeMaxima)
+                {
+                    totalForaFaixa++;
+                }
+            }
+        }
+
+        Console.WriteLine($"\nTotal de alunos fora da faixa etária para {EnumHelper.GetDescription(etapaSelecionada)}: {totalForaFaixa}");
+        Console.WriteLine();
+    }
+
+    private static (int idadeMinima, int idadeMaxima) ObtemIdadesDaEtapaDeEnsino(EtapaEnsinoEnum etapaSelecionada)
+    {
+        switch (etapaSelecionada)
+        {
+            case EtapaEnsinoEnum.Infantil:
+                return (0, 5);
+            case EtapaEnsinoEnum.FundamentalAnosIniciais:
+                return (6, 11);
+            case EtapaEnsinoEnum.FundamentalAnosFinais:
+                return (11, 15);
+            case EtapaEnsinoEnum.Medio:
+                return (15, 18);
+            default:
+                return (0, int.MaxValue);
+        }
     }
 }
