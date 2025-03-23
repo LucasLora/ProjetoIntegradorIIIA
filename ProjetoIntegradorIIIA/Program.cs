@@ -85,10 +85,9 @@ internal class Program
 
     private static void CadastrarAluno()
     {
-        Console.WriteLine("=== Cadastro de aluno ===");
+        Console.WriteLine("\n=== Cadastro de aluno ===");
 
-        // Validação de Nome
-        string nome;
+        string? nome;
         while (true)
         {
             Console.Write("Digite o nome do aluno: ");
@@ -100,46 +99,34 @@ internal class Program
             Console.WriteLine("O nome não pode estar vazio.");
         }
 
-        // Validação de cpf
-        string cpf;
+        string? cpf;
         while (true)
         {
             Console.Write("Digite o CPF do aluno (apenas números): ");
             cpf = Console.ReadLine();
 
-            if (!string.IsNullOrWhiteSpace(cpf) && cpf.Length == 11 && cpf.All(char.IsDigit))
+            if (!string.IsNullOrWhiteSpace(cpf) &&
+                cpf.Length == 11 &&
+                cpf.All(char.IsDigit))
                 break;
 
             Console.WriteLine("CPF inválido! Deve conter exatamente 11 números.");
         }
 
-
-        // Validação de data do nascimento  
         DateTime dataNascimento;
-        bool dataValida;
-        do
+        while (true)
         {
-            dataValida = true;
             Console.Write("Digite a data de nascimento do aluno (dd/MM/yyyy): ");
-            string stringData = Console.ReadLine();
-            if (!DateTime.TryParse(stringData, out dataNascimento))
-            {
-                Console.WriteLine("Data inválida! Digite no formato correto (dd/MM/yyyy).");
-                dataValida = false;
-            }
-            else
-            {
-                if (dataNascimento > DateTime.Now)
-                {
-                    Console.WriteLine("A data de nascimento não pode ser no futuro.");
-                    dataValida = false;
-                }
-            }
+            string? stringData = Console.ReadLine();
 
-        } while (!dataValida);
+            if (DateTime.TryParseExact(stringData, "dd/MM/yyyy", null, System.Globalization.DateTimeStyles.None, out dataNascimento) &&
+                dataNascimento <= DateTime.Now)
+                break;
 
-        // Validação de endereço
-        string endereco;
+            Console.WriteLine("Data inválida! Certifique-se de usar o formato correto (dd/MM/yyyy) e que a data não seja no futuro.");
+        }
+
+        string? endereco;
         while (true)
         {
             Console.Write("Digite o endereço do aluno: ");
@@ -152,18 +139,19 @@ internal class Program
 
         };
 
-        // Criando o objeto Aluno com os valores validados
-        Aluno novoAluno = new Aluno(nome, cpf, endereco, dataNascimento);
+        Console.WriteLine();
+
         try
         {
-            // Cadastrando o aluno na escola
-            escola.CadastrarAluno(novoAluno);
+            escola.CadastrarAluno(new Aluno(nome, cpf, endereco, dataNascimento));
             Console.WriteLine("Aluno cadastrado com sucesso!");
         }
         catch (Exception ex)
         {
             Console.WriteLine("Erro ao cadastrar o aluno: " + ex.Message);
         }
+
+        Console.WriteLine();
     }
 
     private static void CadastrarTurma()
