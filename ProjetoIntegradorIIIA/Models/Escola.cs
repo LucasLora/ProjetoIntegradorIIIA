@@ -54,10 +54,5 @@
 
             turma.Alunos.IncluirNoFim(aluno);
         }
-
-        public ListaDeAluno.ListaDeAluno ObterTodosOsAlunos()
-        {
-            return Alunos;
-        }
     }
 }

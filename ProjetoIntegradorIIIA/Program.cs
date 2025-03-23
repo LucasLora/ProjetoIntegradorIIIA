@@ -271,31 +271,26 @@ internal class Program
 
     private static void ListarTodosOsAlunosDaEscola()
     {
-        Console.WriteLine("=== Listagem de Alunos da Escola ===");
+        Console.WriteLine("\n=== Listagem de Alunos da Escola ===");
 
-        ListaDeAluno alunos = escola.ObterTodosOsAlunos(); // Chama o método da classe Escola
-
-        if (alunos.Tamanho() == 0)
+        if (escola.Alunos.Tamanho() == 0)
         {
             Console.WriteLine("Nenhum aluno cadastrado na escola.");
-            return;
+        }
+        else
+        {
+            Console.WriteLine(string.Join(Environment.NewLine, ObterAlunosFormatados()));
         }
 
-        // Busca o primeiro aluno da lista
-        CustomLinkedListNode<Aluno> nodo = alunos.PrimeiroAluno();
-        CustomLinkedListNode<Aluno> head = nodo;
+        Console.WriteLine();
+    }
 
-        // Lista Circular
-        do
+    private static IEnumerable<string> ObterAlunosFormatados()
+    {
+        for (CustomLinkedListNode<Aluno> node = escola.Alunos.PrimeiroAluno(); node != null; node = node.Next)
         {
-            // Exibe as informações do aluno atual
-            Aluno aluno = nodo.Value;
-            Console.WriteLine($"Código: {aluno.Codigo} | Nome: {aluno.Nome} | CPF: {aluno.Cpf} | Data de Nascimento: {aluno.DataNascimento:dd/MM/yyyy}");
-
-            // Avança para o próximo nó
-            nodo = nodo.Next;
-
-        } while (nodo != null && nodo != head);
+            yield return node.value.ToString();
+        }
     }
 
     private static void ListarTodasAsTurmasDaEscola()
