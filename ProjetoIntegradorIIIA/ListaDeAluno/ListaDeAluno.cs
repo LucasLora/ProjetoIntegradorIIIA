@@ -1,4 +1,5 @@
 ﻿using ProjetoIntegradorIIIA.CustomLinkedList;
+using ProjetoIntegradorIIIA.Exceptions;
 using ProjetoIntegradorIIIA.Models;
 
 namespace ProjetoIntegradorIIIA.ListaDeAluno
@@ -9,9 +10,28 @@ namespace ProjetoIntegradorIIIA.ListaDeAluno
 
         public ListaDeAluno() => lista = new CustomLinkedList<Aluno>();
 
-        public void IncluirNoInicio(Aluno aluno) => lista.AddFirst(aluno);
+        public void IncluirNoInicio(Aluno aluno)
+        {
+            VerificaSeAlunoJaFoiIncluido(aluno);
+            lista.AddFirst(aluno);
+        }
 
-        public void IncluirNoFim(Aluno aluno) => lista.AddLast(aluno);
+        public void IncluirNoFim(Aluno aluno)
+        {
+            VerificaSeAlunoJaFoiIncluido(aluno);
+            lista.AddLast(aluno);
+        }
+
+        private void VerificaSeAlunoJaFoiIncluido(Aluno aluno)
+        {
+            for (CustomLinkedListNode<Aluno> node = lista.First; node != null; node = node.Next)
+            {
+                if (node.Value.Equals(aluno))
+                {
+                    throw new AlunoJaExistenteException();
+                }
+            }
+        }
 
         public void Ordenar() => lista.Sort((a, b) => string.Compare(a.Nome, b.Nome, StringComparison.OrdinalIgnoreCase));
 

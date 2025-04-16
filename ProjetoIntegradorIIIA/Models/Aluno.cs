@@ -32,5 +32,18 @@
                 idade--;
             return idade;
         }
+
+        public override bool Equals(object? obj)
+        {
+            if (obj == null || GetType() != obj.GetType())
+                return false;
+
+            return Codigo == ((Aluno)obj).Codigo;
+        }
+
+        public override int GetHashCode()
+        {
+            return Codigo.GetHashCode();
+        }
     }
 }

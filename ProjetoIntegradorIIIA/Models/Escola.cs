@@ -1,4 +1,6 @@
-﻿namespace ProjetoIntegradorIIIA.Models
+﻿using ProjetoIntegradorIIIA.Exceptions;
+
+namespace ProjetoIntegradorIIIA.Models
 {
     class Escola
     {
@@ -46,11 +48,8 @@
             if (aluno == null)
                 throw new Exception("Aluno não encontrado.");
 
-            if (turma.Alunos.GetByCodigo(codigoAluno) != null)
-                throw new Exception("Aluno já matriculado nesta turma.");
-
             if (turma.QuantidadeMatriculados >= turma.LimiteVagas)
-                throw new Exception("A turma já atingiu o limite de vagas.");
+                throw new LimiteVagasException("A turma já atingiu o limite de vagas.");
 
             turma.Alunos.IncluirNoFim(aluno);
         }

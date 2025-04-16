@@ -1,5 +1,6 @@
 ﻿using ProjetoIntegradorIIIA.CustomLinkedList;
 using ProjetoIntegradorIIIA.Enums;
+using ProjetoIntegradorIIIA.Exceptions;
 using ProjetoIntegradorIIIA.ListaDeAluno;
 using ProjetoIntegradorIIIA.Models;
 
@@ -247,6 +248,14 @@ internal class Program
         {
             escola.MatricularAluno(codigoTurma, codigoAluno);
             Console.WriteLine("Aluno matriculado com sucesso!");
+        }
+        catch (AlunoJaExistenteException)
+        {
+            Console.WriteLine("Aluno já matriculado nesta turma.");
+        }
+        catch (LimiteVagasException ex)
+        {
+            Console.WriteLine(ex.Message);
         }
         catch (Exception ex)
         {

@@ -26,6 +26,19 @@ namespace ProjetoIntegradorIIIA.Models
         {
             return $"Código: {Codigo}, Etapa: {EtapaEnsino.GetDescription()}, Ano: {Ano}, Vagas: {QuantidadeMatriculados}/{LimiteVagas}";
         }
+
+        public override bool Equals(object? obj)
+        {
+            if (obj == null || GetType() != obj.GetType())
+                return false;
+
+            return Codigo == ((Turma)obj).Codigo;
+        }
+
+        public override int GetHashCode()
+        {
+            return Codigo.GetHashCode();
+        }
     }
 }
 
